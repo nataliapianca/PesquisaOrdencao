@@ -9,7 +9,8 @@ import java.util.Random;
 
 
 public class ControleArquivos {
-
+	
+	
 	//---------------------------- escrita e leitura do arquivo ----------------------------
 	static public void escreverArquivo(String caminho, int num) {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminho))){
@@ -26,20 +27,22 @@ public class ControleArquivos {
 
 	}
 
-	static public void lerAquivo(String nome, int num) {
-		try (BufferedReader br = new BufferedReader(new FileReader(nome))){
-			String linha;
-			while((linha = br.readLine()) != null) {
-				int valor = Integer.parseInt(linha);
-				System.out.println(valor);
-			}
+	public static int[] lerArquivo(String nome, int num) { //passando os valores como vetor
+	    int[] vetor = new int[num];
+	    int contador = 0;
 
+	    try (BufferedReader br = new BufferedReader(new FileReader(nome))) {
+	        String linha;
+	        while ((linha = br.readLine()) != null && contador < num) {
+	            vetor[contador] = Integer.parseInt(linha.trim());
+	            contador++;
+	        }
+	    } catch (IOException e) {
+	        System.out.println("erro ao carregar números: " + e.getMessage());
+	    }
 
-		}catch(IOException e) {
-			System.out.println("erro ao carregar numeros " + e.getMessage());
-		}
+	    return vetor; 
 	}
-	
 	
  //---------------------------- Aplicação dos algoritimos ----------------------------
 	
@@ -61,9 +64,19 @@ public class ControleArquivos {
 	 * 
 	 */
 	
-	public void selecaoDireta() {
+	public void selecaoDireta(int[] vetor) { //aplicando o da renata com o vetor que foi criado em cima
 		int min, temp;
-		
+		for(int i=0; i<vetor.length; i++) {
+			min = i;
+			for (int j=i+1; j<vetor.length; j++) {
+				if (vetor[j] < vetor[min]) {
+					min = j;
+				}
+			}
+			temp = vetor[i];
+			vetor[i] = vetor[min];
+			vetor[min] = temp;	
+		}
 	}
 	
 
