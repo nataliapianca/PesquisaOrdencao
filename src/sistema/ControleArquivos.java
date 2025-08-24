@@ -2,47 +2,76 @@ package sistema;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
+import dados.Item;
 
 public class ControleArquivos {
 	
 	
+	
+	//---------------------------- criação do arquivo para a mesma pasta que está nosso código ----------------------------
+	
+	public boolean criar(String nome) {
+		try {
+				File arquivo = new File(nome);
+		
+				if(arquivo.createNewFile()) {
+					System.out.println("Arquivo criado com sucesso.\nCaminho: " + arquivo.getAbsolutePath());
+					return true;
+				} else {
+					System.out.println("Arquivo já existe.");
+					return true;
+				}
+		
+	    } catch (IOException e) {
+	    	System.out.println("Ocorreu um erro: " + e.getMessage());
+	    	return false;
+	    }
+	}
+	
 	//---------------------------- escrita e leitura do arquivo ----------------------------
-	static public void escreverArquivo(String caminho, int num) {
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminho))){
+	 public void escreverArquivo(String nome, int num) {
+		 
+		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nome))){
 			Random aleatorio = new Random();
 			int valor;
+			
 			for (int i=0; i<num; i++) {
 				valor = aleatorio.nextInt(1000); 
-				bw.write(valor + "\n");
+				escritor.write(valor + "\n");
 			}
-
-		}catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("erro ao salvar numeros " + e.getMessage());
 		}
 
 	}
 
-	public static int[] lerArquivo(String nome, int num) { //passando os valores como vetor
-	    int[] vetor = new int[num];
-	    int contador = 0;
-
-	    try (BufferedReader br = new BufferedReader(new FileReader(nome))) {
-	        String linha;
-	        while ((linha = br.readLine()) != null && contador < num) {
-	            vetor[contador] = Integer.parseInt(linha.trim());
-	            contador++;
+	public Item[] lerArquivo(String nome, int n) { 
+	    String linha; // o proprio codigo pode imprimir um de cada vez
+	    int cont = 0;
+	    Item[] vetor = new Item[n];
+	    Item num;
+	    
+	    try (BufferedReader leitor = new BufferedReader(new FileReader(nome))) {
+	    	
+	        while ((linha = leitor.readLine()) != null) {
+	            num = new Item(Integer.parseInt(linha.trim()));
+	            vetor[cont] = num;
+	            cont++;
 	        }
+	        
+	        leitor.close();
 	    } catch (IOException e) {
 	        System.out.println("erro ao carregar números: " + e.getMessage());
 	    }
-
-	    return vetor; 
+		return vetor;
 	}
+	
 	
  //---------------------------- Aplicação dos algoritimos ----------------------------
 	
@@ -64,20 +93,5 @@ public class ControleArquivos {
 	 * 
 	 */
 	
-	public void selecaoDireta(int[] vetor) { //aplicando o da renata com o vetor que foi criado em cima
-		int min, temp;
-		for(int i=0; i<vetor.length; i++) {
-			min = i;
-			for (int j=i+1; j<vetor.length; j++) {
-				if (vetor[j] < vetor[min]) {
-					min = j;
-				}
-			}
-			temp = vetor[i];
-			vetor[i] = vetor[min];
-			vetor[min] = temp;	
-		}
-	}
 	
-
 }
