@@ -6,9 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
-
-import dados.Item;
 
 public class ControleArquivos {
 
@@ -50,26 +49,26 @@ public class ControleArquivos {
 		}
 
 	}
-
-	public Item[] lerArquivo(String nome, int n) {
-		String linha; // o proprio codigo pode imprimir um de cada vez
-		int cont = 0;
-		Item[] vetor = new Item[n];
-		Item num;
-
+		static public int[] lerArquivo(String nome) {
+		ArrayList<Integer> numerosList = new ArrayList<>();
 		try (BufferedReader leitor = new BufferedReader(new FileReader(nome))) {
-
+			String linha;
 			while ((linha = leitor.readLine()) != null) {
-				num = new Item(Integer.parseInt(linha.trim()));
-				vetor[cont] = num;
-				cont++;
+				numerosList.add(Integer.parseInt(linha.trim()));
 			}
-
-			leitor.close();
 		} catch (IOException e) {
 			System.out.println("erro ao carregar números: " + e.getMessage());
+		} catch (NumberFormatException e) {
+			System.out.println("erro: O arquivo contém dados que não são números inteiros. " + e.getMessage());
+			return null;
+		}
+
+		// convertendo p/ vetor
+		int[] vetor = new int[numerosList.size()];
+		for (int i = 0; i < numerosList.size(); i++) {
+			vetor[i] = numerosList.get(i);
 		}
 		return vetor;
 	}
-
 }
+		
