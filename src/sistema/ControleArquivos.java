@@ -1,14 +1,14 @@
 package sistema;
 
+import dados.Item;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
-
-import dados.Item;
 
 public class ControleArquivos {
 
@@ -51,24 +51,28 @@ public class ControleArquivos {
 
 	}
 
-	public Item[] lerArquivo(String nome, int n) {
-		String linha; // o proprio codigo pode imprimir um de cada vez
-		int cont = 0;
-		Item[] vetor = new Item[n];
+	public Item[] lerArquivo(String nome) {
+		String linha; // o proprio codigo pode ler uma linha de cada vez
+		ArrayList<Item> numerosList = new ArrayList<>();
 		Item num;
 
 		try (BufferedReader leitor = new BufferedReader(new FileReader(nome))) {
 
 			while ((linha = leitor.readLine()) != null) {
 				num = new Item(Integer.parseInt(linha.trim()));
-				vetor[cont] = num;
-				cont++;
+				numerosList.add(num);
 			}
 
 			leitor.close();
 		} catch (IOException e) {
 			System.out.println("erro ao carregar números: " + e.getMessage());
 		}
+
+		Item[] vetor = new Item[numerosList.size()];
+		for (int i = 0; i < numerosList.size(); i++) {
+			vetor[i] = numerosList.get(i);
+		}
+
 		return vetor;
 	}
 

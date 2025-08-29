@@ -6,13 +6,12 @@ import exceptions.ValidationUtils;
 import java.util.Scanner;
 import sistema.ControleArquivos;
 import sistema.HeapSort;
-import sistema.SelecaoDireta;
 import sistema.InsercaoDireta;
+import sistema.SelecaoDireta;
 
 public class Program {
 
 	static Scanner sc = new Scanner(System.in);
-	private static int num = 0;
 
 	public static void main(String[] args) {
 		int op;
@@ -50,6 +49,8 @@ public class Program {
 	}
 
 	public static void gerarGravar(ControleArquivos controleArq) {
+		int num;
+
 		num = lerInt("Digite quantos números deseja gerar aleatoriamente:");
 		sc.nextLine();
 
@@ -60,14 +61,16 @@ public class Program {
 
 	public static void lerEimprimir(ControleArquivos controleArq) {
 		String nome = lerString("Digite o nome do arquivo que deseja ler: ");
-		Item[] vetor = controleArq.lerArquivo(nome, num);
-		num = vetor.length;
+		Item[] vetor;
 
 		try {
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
 			System.out.println("Erro: " + e.getMessage());
+			return;
 		}
+
+		vetor = controleArq.lerArquivo(nome);
 
 		for (Item n : vetor) {
 			System.out.print(n.getChave() + "  ");
@@ -77,9 +80,9 @@ public class Program {
 
 	public static void ordenarArquivo(ControleArquivos controleArq) {
 		menuOrdenacao();
-
-		String nome = lerString("Digite o nome do arquivo que deseja ordenar: ");
 		int alg = lerInt("Opção: ");
+		String nome = lerString("Digite o nome do arquivo que deseja ordenar: ");
+		
 		sc.nextLine();
 
 		switch (alg) {
@@ -117,7 +120,9 @@ public class Program {
 	}
 
 	public static void menuOrdenacao() {
-		System.out.println("\n========== Escolha o algoritmo de ordenação =========="
+		String amarelo = "\u001B[33m";
+		String reset   = "\u001B[0m";
+		System.out.println("\n" + amarelo + "========== Escolha o algoritmo de Ordenação =========="
 				+ "\n1. Seleção Direta"
 				+ "\n2. HeapSort"
 				+ "\n3. Inserção Direta"
@@ -125,7 +130,7 @@ public class Program {
 				+ "\n5. BubbleSort"
 				+ "\n6. ShakeSort"
 				+ "\n7. QuickSort");
-		System.out.println("======================================================");
+		System.out.println("======================================================" + reset);
 	}
 
 	public static void menu() {
@@ -147,26 +152,18 @@ public class Program {
 		return sc.nextInt();
 	}
 
-	public static void AlgoritHeapSort(ControleArquivos controleArq, String nome) {
-		Item[] numeros = controleArq.lerArquivo(nome, num);
-		HeapSort hp = new HeapSort(numeros.length, numeros);
-
-		long inicio = System.nanoTime();
-		hp.heapSort(numeros);
-		long fim = System.nanoTime();
-
-		System.out.println("\nVetor ordenado: ");
-		for (Item n : numeros) {
-			System.out.println(n.getChave());
-		}
-
-		double duracao = (fim - inicio) / 1_000_000.0;
-		System.out.println("Tempo de execução do HeapSort: " + duracao + " ms");
-	}
+	
 
 	public static void AlgoritimoSelecao(ControleArquivos controleArq, String nome) {
+
+		try { //metodo para verificar se o nome do arquivo está correto
+			ValidationUtils.validarArquivo(nome);
+		} catch (DomainException e) {
+			System.out.println("Erro: " + e.getMessage());
+			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+		}
 		SelecaoDireta sd = new SelecaoDireta();
-		Item[] numeros = controleArq.lerArquivo(nome, num);
+		Item[] numeros = controleArq.lerArquivo(nome);
 
 		long inicio = System.nanoTime();
 		sd.selecaoDireta(numeros);
@@ -181,9 +178,40 @@ public class Program {
 		System.out.println("Tempo de execução da Seleção Direta: " + duracao + " ms");
 	}
 
+	public static void AlgoritHeapSort(ControleArquivos controleArq, String nome) {
+		try { //metodo para verificar se o nome do arquivo está correto
+			ValidationUtils.validarArquivo(nome);
+		} catch (DomainException e) {
+			System.out.println("Erro: " + e.getMessage());
+			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+		}
+
+		Item[] numeros = controleArq.lerArquivo(nome);
+		HeapSort hp = new HeapSort();
+
+		long inicio = System.nanoTime();
+		hp.heapSort(numeros);
+		long fim = System.nanoTime();
+
+		System.out.println("\nVetor ordenado: ");
+		for (Item n : numeros) {
+			System.out.println(n.getChave());
+		}
+
+		double duracao = (fim - inicio) / 1_000_000.0;
+		System.out.println("Tempo de execução do HeapSort: " + duracao + " ms");
+		}
+
+
 	public static void AlgoritimoInsercaoDireta(ControleArquivos controleArq, String nome) {
+		try { //metodo para verificar se o nome do arquivo está correto
+			ValidationUtils.validarArquivo(nome);
+		} catch (DomainException e) {
+			System.out.println("Erro: " + e.getMessage());
+			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+		}
 		InsercaoDireta id = new InsercaoDireta();
-		Item[] nums = controleArq.lerArquivo(nome, num);
+		Item[] nums = controleArq.lerArquivo(nome);
 
 		long start = System.nanoTime();
 		id.insercaoDireta(nums);

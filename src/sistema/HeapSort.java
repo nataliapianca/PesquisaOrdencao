@@ -3,33 +3,14 @@ package sistema;
 import dados.Item;
 
 public class HeapSort {
-	private int TAMANHO;
-	private Item[] vetor;
-	public int nElem;
+	public Item[] vetor;
+	public int nElem = 0;
 
-	public HeapSort(int tAMANHO, Item[] v) {
-		TAMANHO = tAMANHO;
-		this.vetor = v;
-		this.nElem = 0;
-	}
 
-	public int getnElem() {
-		return nElem;
-	}
+	public void heapSort(Item[] vet) {
+		this.vetor = vet;
+		this.nElem = vet.length;
 
-	public void setnElem(int nElem) {
-		this.nElem = nElem;
-	}
-
-	public int getTAMANHO() {
-		return TAMANHO;
-	}
-
-	public Item[] getVetor() {
-		return vetor;
-	}
-
-	public void heapSort(Item[] vetor) {
 		int dir = nElem - 1;
 		int esq = (dir - 1) / 2;
 		Item temp;
