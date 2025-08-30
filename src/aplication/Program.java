@@ -99,7 +99,7 @@ public class Program {
 				break;
 
 			case 4:
-				System.out.println("ShellSort ainda não implementado.");
+				AlgoritimoShellsort(controleArq, nome);
 				break;
 
 			case 5:
@@ -165,6 +165,7 @@ public class Program {
 		SelecaoDireta sd = new SelecaoDireta();
 		Item[] numeros = controleArq.lerArquivo(nome);
 
+		//adicionar numero de movimentações e comparativos
 		long inicio = System.nanoTime();
 		sd.selecaoDireta(numeros);
 		long fim = System.nanoTime();
@@ -193,6 +194,8 @@ public class Program {
 		hp.heapSort(numeros);
 		long fim = System.nanoTime();
 
+		//adicionar numero de movimentações e comparativos
+
 		System.out.println("\nVetor ordenado: ");
 		for (Item n : numeros) {
 			System.out.println(n.getChave());
@@ -217,6 +220,7 @@ public class Program {
 		id.insercaoDireta(nums);
 		long end = System.nanoTime();
 
+		//adicionar numero de movimentações e comparativos
 		System.out.println("Vetor ordenado (Inserção Direta):");
 		for (Item n : nums) {
 			System.out.println(n.getChave());
@@ -225,4 +229,32 @@ public class Program {
 		double duration = (end - start) / 1_000_000.0;
 		System.out.println("Tempo de execução da Inserção Direta: " + duration + " ms");
 	}
+
+	public static void AlgoritimoShellsort(ControleArquivos controleArq, String nome) {
+		try { //metodo para verificar se o nome do arquivo está correto
+			ValidationUtils.validarArquivo(nome);
+		} catch (DomainException e) {
+			System.out.println("Erro: " + e.getMessage());
+			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+		}
+		Shellsort shell = new Shellsort();
+		Item[] nums = controleArq.lerArquivo(nome);
+
+		long start = System.nanoTime();
+		shell.shellSort(nums);
+		long end = System.nanoTime();
+
+		//adicionar numero de movimentações e comparativos
+		System.out.println("Vetor ordenado (Shellsort):");
+		for (Item n : nums) {
+			System.out.println(n.getChave());
+		}
+
+		double duration = (end - start) / 1_000_000.0;
+		System.out.println("Tempo de execução do Shellsort: " + duration + " ms");
+	}
+
+
+
+
 }
