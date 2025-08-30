@@ -4,11 +4,14 @@ import dados.Item;
 import exceptions.DomainException;
 import exceptions.ValidationUtils;
 import java.util.Scanner;
+
+import sistema.Bubblesort;
 import sistema.ControleArquivos;
 import sistema.HeapSort;
 import sistema.InsercaoDireta;
 import sistema.SelecaoDireta;
 import sistema.Shellsort;
+import sistema.Bubblesort;
 
 public class Program {
 
@@ -104,7 +107,7 @@ public class Program {
 				break;
 
 			case 5:
-				System.out.println("BubbleSort ainda não implementado.");
+				AlgoritimoBubblesort(controleArq, nome);
 				break;
 
 			case 6:
@@ -254,6 +257,31 @@ public class Program {
 
 		double duration = (end - start) / 1_000_000.0;
 		System.out.println("Tempo de execução do Shellsort: " + duration + " ms");
+	}
+
+	public static void AlgoritimoBubblesort(ControleArquivos controleArq, String nome) {
+		try { // metodo para verificar se o nome do arquivo está correto
+			ValidationUtils.validarArquivo(nome);
+		} catch (DomainException e) {
+			System.out.println("Erro: " + e.getMessage());
+			return;// se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter
+					// encontrado o arquivo
+		}
+		Bubblesort bubb = new Bubblesort();
+		Item[] nums = controleArq.lerArquivo(nome);
+
+		long start = System.nanoTime();
+		bubb.bubblesort(nums);
+		long end = System.nanoTime();
+
+		// adicionar numero de movimentações e comparativos
+		System.out.println("Vetor ordenado (Bubblesort):");
+		for (Item n : nums) {
+			System.out.println(n.getChave());
+		}
+
+		double duration = (end - start) / 1_000_000.0;
+		System.out.println("Tempo de execução do Bubblesort: " + duration + " ms");
 	}
 
 }
