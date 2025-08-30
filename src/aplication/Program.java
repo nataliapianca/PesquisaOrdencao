@@ -8,6 +8,7 @@ import sistema.ControleArquivos;
 import sistema.HeapSort;
 import sistema.InsercaoDireta;
 import sistema.SelecaoDireta;
+import sistema.Shellsort;
 
 public class Program {
 
@@ -82,7 +83,7 @@ public class Program {
 		menuOrdenacao();
 		int alg = lerInt("Opção: ");
 		String nome = lerString("Digite o nome do arquivo que deseja ordenar: ");
-		
+
 		sc.nextLine();
 
 		switch (alg) {
@@ -121,7 +122,7 @@ public class Program {
 
 	public static void menuOrdenacao() {
 		String amarelo = "\u001B[33m";
-		String reset   = "\u001B[0m";
+		String reset = "\u001B[0m";
 		System.out.println("\n" + amarelo + "========== Escolha o algoritmo de Ordenação =========="
 				+ "\n1. Seleção Direta"
 				+ "\n2. HeapSort"
@@ -152,20 +153,19 @@ public class Program {
 		return sc.nextInt();
 	}
 
-	
-
 	public static void AlgoritimoSelecao(ControleArquivos controleArq, String nome) {
 
-		try { //metodo para verificar se o nome do arquivo está correto
+		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
 			System.out.println("Erro: " + e.getMessage());
-			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+			return;// se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter
+					// encontrado o arquivo
 		}
 		SelecaoDireta sd = new SelecaoDireta();
 		Item[] numeros = controleArq.lerArquivo(nome);
 
-		//adicionar numero de movimentações e comparativos
+		// adicionar numero de movimentações e comparativos
 		long inicio = System.nanoTime();
 		sd.selecaoDireta(numeros);
 		long fim = System.nanoTime();
@@ -180,11 +180,12 @@ public class Program {
 	}
 
 	public static void AlgoritHeapSort(ControleArquivos controleArq, String nome) {
-		try { //metodo para verificar se o nome do arquivo está correto
+		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
 			System.out.println("Erro: " + e.getMessage());
-			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+			return;// se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter
+					// encontrado o arquivo
 		}
 
 		Item[] numeros = controleArq.lerArquivo(nome);
@@ -194,7 +195,7 @@ public class Program {
 		hp.heapSort(numeros);
 		long fim = System.nanoTime();
 
-		//adicionar numero de movimentações e comparativos
+		// adicionar numero de movimentações e comparativos
 
 		System.out.println("\nVetor ordenado: ");
 		for (Item n : numeros) {
@@ -203,15 +204,15 @@ public class Program {
 
 		double duracao = (fim - inicio) / 1_000_000.0;
 		System.out.println("Tempo de execução do HeapSort: " + duracao + " ms");
-		}
-
+	}
 
 	public static void AlgoritimoInsercaoDireta(ControleArquivos controleArq, String nome) {
-		try { //metodo para verificar se o nome do arquivo está correto
+		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
 			System.out.println("Erro: " + e.getMessage());
-			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+			return;// se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter
+					// encontrado o arquivo
 		}
 		InsercaoDireta id = new InsercaoDireta();
 		Item[] nums = controleArq.lerArquivo(nome);
@@ -220,7 +221,7 @@ public class Program {
 		id.insercaoDireta(nums);
 		long end = System.nanoTime();
 
-		//adicionar numero de movimentações e comparativos
+		// adicionar numero de movimentações e comparativos
 		System.out.println("Vetor ordenado (Inserção Direta):");
 		for (Item n : nums) {
 			System.out.println(n.getChave());
@@ -231,11 +232,12 @@ public class Program {
 	}
 
 	public static void AlgoritimoShellsort(ControleArquivos controleArq, String nome) {
-		try { //metodo para verificar se o nome do arquivo está correto
+		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
 			System.out.println("Erro: " + e.getMessage());
-			return;//se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter encontrado o arquivo
+			return;// se o nome estiver errado o algoritmo não continua, pq irá dar erro por n ter
+					// encontrado o arquivo
 		}
 		Shellsort shell = new Shellsort();
 		Item[] nums = controleArq.lerArquivo(nome);
@@ -244,7 +246,7 @@ public class Program {
 		shell.shellSort(nums);
 		long end = System.nanoTime();
 
-		//adicionar numero de movimentações e comparativos
+		// adicionar numero de movimentações e comparativos
 		System.out.println("Vetor ordenado (Shellsort):");
 		for (Item n : nums) {
 			System.out.println(n.getChave());
@@ -253,8 +255,5 @@ public class Program {
 		double duration = (end - start) / 1_000_000.0;
 		System.out.println("Tempo de execução do Shellsort: " + duration + " ms");
 	}
-
-
-
 
 }
