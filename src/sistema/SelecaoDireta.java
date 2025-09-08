@@ -3,8 +3,16 @@ package sistema;
 import dados.Item;
 
 public class SelecaoDireta {
-	public static int comparacao = 0;
-	public static int movimentacao = 0;
+	public int comparacao = 0;
+	public int movimentacao = 0;
+
+	public int getComparacao(){
+		return this.comparacao;
+	}
+
+	public int getMovimentacao(){
+		return this.movimentacao;
+	}
 
 	public void selecaoDireta(Item[] vetor) {
 		int min;
@@ -13,7 +21,7 @@ public class SelecaoDireta {
 			min = i;
 			for (int j = i + 1; j < vetor.length; j++) {
 				//comparação
-				comparacao++;
+				this.comparacao++;
 				if (vetor[j].getChave() < vetor[min].getChave()) {
 					min = j;
 				}
@@ -21,7 +29,7 @@ public class SelecaoDireta {
 			temp = vetor[i];
 			vetor[i] = vetor[min];
 			vetor[min] = temp;
-			movimentacao++;
+			this.movimentacao++;
 		}
 	}
 }

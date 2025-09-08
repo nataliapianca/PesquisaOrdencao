@@ -3,8 +3,17 @@ package sistema;
 import dados.Item;
 
 public class HeapSort {
-	public static int movimentacao = 0;
-    public static int comparacao = 0;
+	public int movimentacao = 0;
+    public int comparacao = 0;
+	
+	public int getMovimentacao(){
+		return this.movimentacao;
+	}
+
+	public int getComparacao(){
+		return this.comparacao;
+	}
+
 	
 	public Item[] vetor;
 	public int nElem = 0;
@@ -24,7 +33,7 @@ public class HeapSort {
 			temp = this.vetor[0];
 			this.vetor[0] = this.vetor[dir];
 			this.vetor[dir--] = temp;
-			movimentacao++;
+			this.movimentacao++;
 			refazHeap(0, dir);
 		}
 	}
@@ -36,16 +45,16 @@ public class HeapSort {
 		boolean heap = false;
 		while ((MaiorFolha <= dir) && (!heap)) {
 			if (MaiorFolha < dir){
-				comparacao++;
+				this.comparacao++;
 				if (this.vetor[MaiorFolha].getChave() < this.vetor[MaiorFolha + 1].getChave())
 					MaiorFolha++;
 			}
-			comparacao++;
+			this.comparacao++;
 			if (raiz.getChave() < this.vetor[MaiorFolha].getChave()) {
 				this.vetor[i] = this.vetor[MaiorFolha];
 				i = MaiorFolha;
 				MaiorFolha = 2 * i + 1;
-				movimentacao++;
+				this.movimentacao++;
 			} else
 				heap = true;
 		}

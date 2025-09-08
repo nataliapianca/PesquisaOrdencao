@@ -3,9 +3,17 @@ package sistema;
 import dados.Item;
 
 public class InsercaoDireta {
-    public static int comparacao = 0;
-	public static int movimentacao = 0;
+    public int comparacao = 0;
+	public int movimentacao = 0;
 
+    public int getComparacao(){
+        return this.comparacao;
+    }
+
+    public int getMovimentacao(){
+        return this.movimentacao;
+    }
+    
     public void insercaoDireta(Item[] vetor) {
         int nElem = vetor.length;
 
@@ -14,13 +22,13 @@ public class InsercaoDireta {
             int j = i - 1;
 
             while (j >= 0 && vetor[j].getChave() > temp.getChave()) {
-                comparacao++;
+                this.comparacao++;
                 vetor[j + 1] = vetor[j];
-                 movimentacao++;
+                this.movimentacao++;
                 j--;
             }
             vetor[j + 1] = temp;
-             movimentacao++;
+            this.movimentacao++;
         }
     }
 }

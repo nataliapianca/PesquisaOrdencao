@@ -15,6 +15,7 @@ import sistema.Shellsort;
 public class Program {
 
 	static Scanner sc = new Scanner(System.in);
+	static String[][] dados;
 
 	public static void main(String[] args) {
 		int op;
@@ -61,11 +62,11 @@ public class Program {
 		controleArq.criar(nome);
 
 
-		System.out.println("----------------------------- Tipos de Arquivo ----------------------------");
+		System.out.println("\033[38;2;255;181;192m----------------------------- Tipos de Arquivo ----------------------------");
 		System.out.println("Digite qual arquivo você quer criar: \n" +
 							"1. Arquivo com números aleatórios desordenados\n" +
 							"2. Arquivo com números ordenados crescente\n" +
-							"3. Arquivo com números ordenados decrescente");
+							"3. Arquivo com números ordenados decrescente\033[0m");
 
 		int opcao = lerInt("Opção: ");
 	
@@ -177,7 +178,7 @@ public class Program {
 		return sc.nextInt();
 	}     
 
-	public static void AlgoritimoSelecao(ControleArquivos controleArq, String nome) {
+	public static void algoritimoSelecao(ControleArquivos controleArq, String nome) {
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
@@ -187,28 +188,23 @@ public class Program {
 		}
 		SelecaoDireta sd = new SelecaoDireta();
 		Item[] numeros = controleArq.lerArquivo(nome);
-
-		SelecaoDireta.comparacao = 0;
-		SelecaoDireta.movimentacao = 0;
 		
 		long inicio = System.nanoTime();
 		sd.selecaoDireta(numeros);
 		long fim = System.nanoTime();
-
-		System.out.println("Numero de movimentações: " + SelecaoDireta.movimentacao);
-		System.out.println("Numero de comparações: " + SelecaoDireta.comparacao);
 
 		System.out.println("Vetor ordenado:");
 		for (Item numero : numeros) {
 			System.out.println(numero.getChave());
 		}
 
-	
 		double duracao = (fim - inicio) / 1_000_000.0;
 		System.out.println("Tempo de execução da Seleção Direta: " + duracao + " ms");
+
+		
 	}
 
-	public static void AlgoritHeapSort(ControleArquivos controleArq, String nome) {
+	public static void algoritimoHeapSort(ControleArquivos controleArq, String nome) {
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
@@ -220,15 +216,12 @@ public class Program {
 		Item[] numeros = controleArq.lerArquivo(nome);
 		HeapSort hp = new HeapSort();
 
-		HeapSort.comparacao = 0;
-		HeapSort.movimentacao = 0;
-
 		long inicio = System.nanoTime();
 		hp.heapSort(numeros);
 		long fim = System.nanoTime();
 
-		System.out.println("Numero de movimentações: " + HeapSort.movimentacao);
-		System.out.println("Numero de comparações: " + HeapSort.comparacao);
+		System.out.println("Numero de movimentações: " + hp.getMovimentacao());
+		System.out.println("Numero de comparações: " + hp.getComparacao());
 
 		System.out.println("\nVetor ordenado: ");
 		for (Item n : numeros) {
@@ -239,7 +232,7 @@ public class Program {
 		System.out.println("Tempo de execução do HeapSort: " + duracao + " ms");
 	}
 
-	public static void AlgoritimoInsercaoDireta(ControleArquivos controleArq, String nome) {
+	public static void algoritimoInsercaoDireta(ControleArquivos controleArq, String nome) {
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
@@ -250,15 +243,9 @@ public class Program {
 		InsercaoDireta id = new InsercaoDireta();
 		Item[] nums = controleArq.lerArquivo(nome);
 
-		InsercaoDireta.comparacao = 0;
-		InsercaoDireta.movimentacao = 0;
-
 		long start = System.nanoTime();
 		id.insercaoDireta(nums);
 		long end = System.nanoTime();
-
-		System.out.println("Numero de movimentações: " + InsercaoDireta.movimentacao);
-		System.out.println("Numero de comparações: " + InsercaoDireta.comparacao);
 
 		System.out.println("Vetor ordenado (Inserção Direta):");
 		for (Item n : nums) {
@@ -269,7 +256,7 @@ public class Program {
 		System.out.println("Tempo de execução da Inserção Direta: " + duration + " ms");
 	}
 
-	public static void AlgoritimoShellsort(ControleArquivos controleArq, String nome) {
+	public static void algoritimoShellsort(ControleArquivos controleArq, String nome) {
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
@@ -297,7 +284,7 @@ public class Program {
 		System.out.println("Tempo de execução do Shellsort: " + duration + " ms");
 	}
 
-	public static void AlgoritimoBubblesort(ControleArquivos controleArq, String nome) {
+	public static void algoritimoBubblesort(ControleArquivos controleArq, String nome) {
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
@@ -308,16 +295,10 @@ public class Program {
 		Bubblesort bubb = new Bubblesort();
 		Item[] nums = controleArq.lerArquivo(nome);
 
-		Bubblesort.comparacao = 0;
-		Bubblesort.movimentacao = 0;
 
 		long start = System.nanoTime();
 		bubb.bubblesort(nums);
 		long end = System.nanoTime();
-
-		//comparacao e movimentacao
-		System.out.println("Numero de movimentações: " + Bubblesort.movimentacao);
-		System.out.println("Numero de comparações: " + Bubblesort.comparacao);
 
 		System.out.println("Vetor ordenado (Bubblesort):");
 		for (Item n : nums) {
@@ -328,5 +309,12 @@ public class Program {
 		System.out.println("Tempo de execução do Bubblesort: " + duration + " ms");
 	}
 
+public static void imprimirTabela(ControleArquivos controleArq, String nomeArquivo){
+//
 	
+}
+	//------------------------------- TABELA TESTE ------------------------------------------------------------------------
+	
+public static void adicionarNaTabela(int comp, int mov, double duration){
+}
 }
