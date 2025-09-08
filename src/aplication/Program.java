@@ -4,14 +4,14 @@ import dados.Item;
 import exceptions.DomainException;
 import exceptions.ValidationUtils;
 import java.util.Scanner;
-
+import java.util.Stack;
 import sistema.Bubblesort;
 import sistema.ControleArquivos;
 import sistema.HeapSort;
 import sistema.InsercaoDireta;
 import sistema.SelecaoDireta;
 import sistema.Shellsort;
-import sistema.Bubblesort;
+
 
 public class Program {
 
@@ -157,6 +157,7 @@ public class Program {
 	}
 
 	public static void AlgoritimoSelecao(ControleArquivos controleArq, String nome) {
+		Stack<Integer> pilha = new Stack<>(); //pilha aux pra fazer decrescente
 
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
@@ -168,15 +169,24 @@ public class Program {
 		SelecaoDireta sd = new SelecaoDireta();
 		Item[] numeros = controleArq.lerArquivo(nome);
 
-		// adicionar numero de movimentações e comparativos
+		System.out.println("Numero de movimentações: " + SelecaoDireta.movimentacao);
+		System.out.println("Numero de comparações: " + SelecaoDireta.comparacao);
+
 		long inicio = System.nanoTime();
 		sd.selecaoDireta(numeros);
 		long fim = System.nanoTime();
 
 		System.out.println("Vetor ordenado:");
 		for (Item numero : numeros) {
+			pilha.push(numero.getChave());
 			System.out.println(numero.getChave());
 		}
+
+		System.out.println("Decrescente: ");
+		while (!pilha.isEmpty()) {
+			System.out.print(pilha.pop());
+		} //pra tirar de cima 
+		
 
 		double duracao = (fim - inicio) / 1_000_000.0;
 		System.out.println("Tempo de execução da Seleção Direta: " + duracao + " ms");
@@ -198,7 +208,8 @@ public class Program {
 		hp.heapSort(numeros);
 		long fim = System.nanoTime();
 
-		// adicionar numero de movimentações e comparativos
+		System.out.println("Numero de movimentações: " + HeapSort.movimentacao);
+		System.out.println("Numero de comparações: " + HeapSort.comparacao);
 
 		System.out.println("\nVetor ordenado: ");
 		for (Item n : numeros) {
@@ -224,7 +235,9 @@ public class Program {
 		id.insercaoDireta(nums);
 		long end = System.nanoTime();
 
-		// adicionar numero de movimentações e comparativos
+		System.out.println("Numero de movimentações: " + InsercaoDireta.movimentacao);
+		System.out.println("Numero de comparações: " + InsercaoDireta.comparacao);
+
 		System.out.println("Vetor ordenado (Inserção Direta):");
 		for (Item n : nums) {
 			System.out.println(n.getChave());
@@ -274,7 +287,10 @@ public class Program {
 		bubb.bubblesort(nums);
 		long end = System.nanoTime();
 
-		// adicionar numero de movimentações e comparativos
+		//comparacao e movimentacao
+		System.out.println("Numero de movimentações: " + Bubblesort.movimentacao);
+		System.out.println("Numero de comparações: " + Bubblesort.comparacao);
+
 		System.out.println("Vetor ordenado (Bubblesort):");
 		for (Item n : nums) {
 			System.out.println(n.getChave());

@@ -3,9 +3,8 @@ package sistema;
 import dados.Item;
 
 public class SelecaoDireta {
-
-	int comparacao = 0;
-	int movimentacao = 0;
+	public static int comparacao = 0;
+	public static int movimentacao = 0;
 
 	public void selecaoDireta(Item[] vetor) {
 		int min;
