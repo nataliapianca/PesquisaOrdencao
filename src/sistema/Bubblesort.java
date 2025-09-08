@@ -22,13 +22,13 @@ public static int comparacao = 0;
         do {
             i = 0;
             for (j = 0; j < n; j++)
+            comparacao++;
                 if (this.vetor[j].getChave() > this.vetor[j + 1].getChave()) {
                     temp = this.vetor[j];
                     this.vetor[j] = this.vetor[j + 1];
                     this.vetor[j + 1] = temp;
                     i = j;
                     movimentacao ++;
-                    comparacao ++;
                 }
             n = i;
         } while (n >= 1);

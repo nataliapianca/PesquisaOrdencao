@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class ControleArquivos {
@@ -35,20 +36,43 @@ public class ControleArquivos {
 
 	// ---------------------------- escrita e leitura do arquivo
 	// ----------------------------
-	public void escreverArquivo(String nome, int num) {
+	public void escreverArquivo(String nome, ArrayList<Integer> vetor) {
 
 		try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nome))) {
-			Random aleatorio = new Random();
-			int valor;
-
-			for (int i = 0; i < num; i++) {
-				valor = aleatorio.nextInt(1000);
-				escritor.write(valor + "\n");
+			for (int num : vetor) {
+				escritor.write(num + "\n");
 			}
 		} catch (IOException e) {
 			System.out.println("erro ao salvar numeros " + e.getMessage());
 		}
 
+	}
+
+	public ArrayList<Integer> gerarNumerosAleatorios(String nome, int num) {
+		int valor; 
+		Random aleatorio = new Random();
+		ArrayList<Integer> vetor = new ArrayList<>(num);
+		
+			for (int i = 0; i < num; i++) {
+				valor = aleatorio.nextInt(1000);
+				vetor.add(valor);
+			}
+			return vetor;
+	}
+
+	public ArrayList<Integer> gerarNumerosCrescentes(String nome, int num) {
+		ArrayList<Integer> vetor = gerarNumerosAleatorios(nome, num);
+		Collections.sort(vetor);
+	
+		return vetor;
+	}
+
+	public ArrayList<Integer> gerarNumerosDecrescentes(String nome, int num) {
+		ArrayList<Integer> vetor = gerarNumerosAleatorios(nome, num);
+		Collections.sort(vetor);
+		Collections.reverse(vetor);
+		
+		return vetor;
 	}
 
 	public Item[] lerArquivo(String nome) {

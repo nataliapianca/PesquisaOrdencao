@@ -19,9 +19,9 @@ public class SelecaoDireta {
 				}
 			}
 			temp = vetor[i];
-			movimentacao++;
 			vetor[i] = vetor[min];
 			vetor[min] = temp;
+			movimentacao++;
 		}
 	}
 }

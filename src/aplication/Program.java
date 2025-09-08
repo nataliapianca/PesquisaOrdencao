@@ -4,7 +4,6 @@ import dados.Item;
 import exceptions.DomainException;
 import exceptions.ValidationUtils;
 import java.util.Scanner;
-import java.util.Stack;
 import sistema.Bubblesort;
 import sistema.ControleArquivos;
 import sistema.HeapSort;
@@ -60,7 +59,29 @@ public class Program {
 
 		String nome = lerString("Digite o nome do arquivo que deseja salvar: ");
 		controleArq.criar(nome);
-		controleArq.escreverArquivo(nome, num);
+
+
+		System.out.println("----------------------------- Tipos de Arquivo ----------------------------");
+		System.out.println("Digite qual arquivo você quer criar: \n" +
+							"1. Arquivo com números aleatórios desordenados\n" +
+							"2. Arquivo com números ordenados crescente\n" +
+							"3. Arquivo com números ordenados decrescente");
+
+		int opcao = lerInt("Opção: ");
+	
+		switch (opcao) {
+			case 1:
+				controleArq.escreverArquivo(nome, controleArq.gerarNumerosAleatorios(nome, num));
+				break;
+			case 2:
+				controleArq.escreverArquivo(nome, controleArq.gerarNumerosCrescentes(nome, num));
+				break;
+			case 3:
+				controleArq.escreverArquivo(nome, controleArq.gerarNumerosDecrescentes(nome, num));
+				break;
+			default:
+				System.out.println("Invadido");
+		}
 	}
 
 	public static void lerEimprimir(ControleArquivos controleArq) {
@@ -154,11 +175,9 @@ public class Program {
 	public static int lerInt(String mensagem) {
 		System.out.println(mensagem);
 		return sc.nextInt();
-	}
+	}     
 
 	public static void AlgoritimoSelecao(ControleArquivos controleArq, String nome) {
-		Stack<Integer> pilha = new Stack<>(); //pilha aux pra fazer decrescente
-
 		try { // metodo para verificar se o nome do arquivo está correto
 			ValidationUtils.validarArquivo(nome);
 		} catch (DomainException e) {
@@ -169,25 +188,22 @@ public class Program {
 		SelecaoDireta sd = new SelecaoDireta();
 		Item[] numeros = controleArq.lerArquivo(nome);
 
-		System.out.println("Numero de movimentações: " + SelecaoDireta.movimentacao);
-		System.out.println("Numero de comparações: " + SelecaoDireta.comparacao);
-
+		SelecaoDireta.comparacao = 0;
+		SelecaoDireta.movimentacao = 0;
+		
 		long inicio = System.nanoTime();
 		sd.selecaoDireta(numeros);
 		long fim = System.nanoTime();
 
+		System.out.println("Numero de movimentações: " + SelecaoDireta.movimentacao);
+		System.out.println("Numero de comparações: " + SelecaoDireta.comparacao);
+
 		System.out.println("Vetor ordenado:");
 		for (Item numero : numeros) {
-			pilha.push(numero.getChave());
 			System.out.println(numero.getChave());
 		}
 
-		System.out.println("Decrescente: ");
-		while (!pilha.isEmpty()) {
-			System.out.print(pilha.pop());
-		} //pra tirar de cima 
-		
-
+	
 		double duracao = (fim - inicio) / 1_000_000.0;
 		System.out.println("Tempo de execução da Seleção Direta: " + duracao + " ms");
 	}
@@ -203,6 +219,9 @@ public class Program {
 
 		Item[] numeros = controleArq.lerArquivo(nome);
 		HeapSort hp = new HeapSort();
+
+		HeapSort.comparacao = 0;
+		HeapSort.movimentacao = 0;
 
 		long inicio = System.nanoTime();
 		hp.heapSort(numeros);
@@ -231,6 +250,9 @@ public class Program {
 		InsercaoDireta id = new InsercaoDireta();
 		Item[] nums = controleArq.lerArquivo(nome);
 
+		InsercaoDireta.comparacao = 0;
+		InsercaoDireta.movimentacao = 0;
+
 		long start = System.nanoTime();
 		id.insercaoDireta(nums);
 		long end = System.nanoTime();
@@ -258,6 +280,9 @@ public class Program {
 		Shellsort shell = new Shellsort();
 		Item[] nums = controleArq.lerArquivo(nome);
 
+		//Shellsort.comparacao = 0;
+		//Shellsort.movimentacao = 0;
+
 		long start = System.nanoTime();
 		shell.shellSort(nums);
 		long end = System.nanoTime();
@@ -283,6 +308,9 @@ public class Program {
 		Bubblesort bubb = new Bubblesort();
 		Item[] nums = controleArq.lerArquivo(nome);
 
+		Bubblesort.comparacao = 0;
+		Bubblesort.movimentacao = 0;
+
 		long start = System.nanoTime();
 		bubb.bubblesort(nums);
 		long end = System.nanoTime();
@@ -300,4 +328,5 @@ public class Program {
 		System.out.println("Tempo de execução do Bubblesort: " + duration + " ms");
 	}
 
+	
 }
