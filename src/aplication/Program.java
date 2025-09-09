@@ -11,6 +11,7 @@ import sistema.HeapSort;
 import sistema.InsercaoDireta;
 import sistema.SelecaoDireta;
 import sistema.Shellsort;
+import sistema.Shakesort;
 import sistema.TabelaComparativos;
 
 public class Program {
@@ -134,7 +135,7 @@ public class Program {
 				break;
 
 			case 6:
-				System.out.println("ShakeSort ainda não implementado.");
+				algoritimoShakesort(controleArq, nome);
 				break;
 
 			case 7:
@@ -166,7 +167,7 @@ public class Program {
 		}
 
 		System.out.println("Número de Comparações: " + sd.getComparacao());
-		System.out.println("Número de Comparações: " + sd.getMovimentacao());
+		System.out.println("Número de Movimentações: " + sd.getMovimentacao());
 
 		double duracao = (fim - inicio) / 1_000_000.0;
 		System.out.println("Tempo de execução da Seleção Direta: " + duracao + " ms");
@@ -219,7 +220,7 @@ public class Program {
 		}
 
 		System.out.println("Número de Comparações: " + id.getComparacao());
-		System.out.println("Número de Comparações: " + id.getMovimentacao());
+		System.out.println("Número de Movimentações: " + id.getMovimentacao());
 
 		double duracao = (end - start) / 1_000_000.0;
 		System.out.println("Tempo de execução da Inserção Direta: " + duracao + " ms");
@@ -245,7 +246,7 @@ public class Program {
 		}
 
 		System.out.println("Número de Comparações: " + shell.getComparacao());
-		System.out.println("Número de Comparações: " + shell.getMovimentacao());
+		System.out.println("Número de Movimentações: " + shell.getMovimentacao());
 
 		double duracao = (end - start) / 1_000_000.0;
 		System.out.println("Tempo de execução do Shellsort: " + duracao + " ms");
@@ -272,12 +273,40 @@ public class Program {
 		}
 
 		System.out.println("Número de Comparações: " + bubb.getComparacao());
-		System.out.println("Número de Comparações: " + bubb.getMovimentacao());
+		System.out.println("Número de Movimentações: " + bubb.getMovimentacao());
 
 		double duracao = (end - start) / 1_000_000.0;
 		System.out.println("Tempo de execução do Bubblesort: " + duracao + " ms");
 
 		adicionarNaTabela("BubbleSort", bubb.getComparacao(), bubb.getMovimentacao(), duracao);
+	}
+	public static void algoritimoShakesort(ControleArquivos controleArq, String nome) {
+		if (!verificarNomeArq(nome)){
+			return;
+		}
+
+		Shakesort shak = new Shakesort();
+		Item[] nums = controleArq.lerArquivo(nome);
+
+		shak.vetor = nums;
+		shak.nElem = nums.length;
+
+		long start = System.nanoTime();
+		shak.shakeSort();
+		long end = System.nanoTime();
+
+		System.out.println("Vetor ordenado (Shakesort):");
+		for (Item n : nums) {
+			System.out.println(n.getChave());
+		}
+
+		System.out.println("Número de Comparações: " + shak.getComparacao());
+		System.out.println("Número de Movimentações: " + shak.getMovimentacao());
+
+		double duracao = (end - start) / 1_000_000.0;
+		System.out.println("Tempo de execução do Shakesort: " + duracao + " ms");
+
+		adicionarNaTabela("Shakesort", shak.getComparacao(), shak.getMovimentacao(), duracao);
 	}
 
 
